@@ -15,7 +15,7 @@ data "aws_subnets" "public" {
 
 data "aws_iam_policy_document" "s3_static_bucket_policy" {
   statement {
-    sid = ""
+    sid    = ""
     effect = "Allow"
     actions = [
       "s3:ListBucket"
@@ -25,7 +25,7 @@ data "aws_iam_policy_document" "s3_static_bucket_policy" {
     ]
   }
   statement {
-    sid = ""
+    sid    = ""
     effect = "Allow"
     actions = [
       # "s3:DeleteObject",
