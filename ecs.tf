@@ -28,11 +28,11 @@ module "ecs" {
           environment = [
             {
               name  = "AWS_REGION"
-              value = "${var.aws_region}"
+              value = var.aws_region
             },
             {
               name  = "BUCKET_NAME"
-              value = "${aws_s3_bucket.static_bucket.bucket}"
+              value = aws_s3_bucket.static_bucket.bucket
             }
           ]
         }
