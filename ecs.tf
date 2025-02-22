@@ -29,7 +29,7 @@ module "ecs" {
       }
       assign_public_ip                   = true
       deployment_minimum_healthy_percent = 100
-      subnet_ids                         = flatten(data.aws_subnets.public.ids)      #List of subnet IDs to use for your tasks
+      subnet_ids                         = flatten(data.aws_subnets.public.ids)         #List of subnet IDs to use for your tasks
       security_group_ids                 = [module.security_group_s3.security_group_id] #Create a SG resource and pass it here
     }
     sqs-ecs-service = { #task definition and service name -> #Change
@@ -49,7 +49,7 @@ module "ecs" {
       }
       assign_public_ip                   = true
       deployment_minimum_healthy_percent = 100
-      subnet_ids                         = flatten(data.aws_subnets.public.ids)      #List of subnet IDs to use for your tasks
+      subnet_ids                         = flatten(data.aws_subnets.public.ids)          #List of subnet IDs to use for your tasks
       security_group_ids                 = [module.security_group_sqs.security_group_id] #Create a SG resource and pass it here
     }
 
