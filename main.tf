@@ -8,7 +8,7 @@ resource "aws_s3_bucket" "static_bucket" {
 }
 
 resource "aws_iam_role" "s3_app_exec" {
-  name = "${local.name_prefix}-s3-app-executionrole"
+  name = "s3-app-executionrole"
 
   assume_role_policy = data.aws_iam_policy_document.s3_static_bucket_policy.json
 }
