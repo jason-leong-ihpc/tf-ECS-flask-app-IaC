@@ -62,12 +62,19 @@ module "security_group_s3" {
   version = "~> 5.1.0"
 
   name        = "${local.name_prefix}-ecs-sg"
-  description = "ECS security group"
+  description = "S3 app security group"
   vpc_id      = data.aws_vpc.default.id
 
-  ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["http-5001-tcp"]
-  egress_rules        = ["all-all"]
+  egress_rules = ["all-all"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5001
+      to_port     = 5001
+      protocol    = "tcp"
+      description = "S3 app security group rule"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
 }
 
 module "security_group_sqs" {
@@ -76,10 +83,17 @@ module "security_group_sqs" {
   version = "~> 5.1.0"
 
   name        = "${local.name_prefix}-ecs-sg"
-  description = "ECS security group"
+  description = "S3 app security group"
   vpc_id      = data.aws_vpc.default.id
 
-  ingress_cidr_blocks = ["0.0.0.0/0"]
-  ingress_rules       = ["http-5002-tcp"]
-  egress_rules        = ["all-all"]
+  egress_rules = ["all-all"]
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5002
+      to_port     = 5002
+      protocol    = "tcp"
+      description = "SQS app security group rule"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
 }
