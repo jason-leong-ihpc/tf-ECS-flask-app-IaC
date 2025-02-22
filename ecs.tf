@@ -12,13 +12,13 @@ module "ecs" {
   }
 
   services = {
-    jason-ecs-service = { #task definition and service name -> #Change
+    s3-ecs-service = { #task definition and service name -> #Change
       cpu    = 512
       memory = 1024
       container_definitions = {
-        jason-container = { #container name -> Change
+        s3-container = { #container name -> Change
           essential = true
-          image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${local.name_prefix}-ecr:latest"
+          image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${local.name_prefix}-s3:latest"
           port_mappings = [
             {
               containerPort = 8080
@@ -32,6 +32,27 @@ module "ecs" {
       subnet_ids                         = flatten(data.aws_subnets.public.ids)      #List of subnet IDs to use for your tasks
       security_group_ids                 = [module.security_group.security_group_id] #Create a SG resource and pass it here
     }
+    sqs-ecs-service = { #task definition and service name -> #Change
+      cpu    = 512
+      memory = 1024
+      container_definitions = {
+        sqs-container = { #container name -> Change
+          essential = true
+          image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${local.name_prefix}-sqs:latest"
+          port_mappings = [
+            {
+              containerPort = 8080
+              protocol      = "tcp"
+            }
+          ]
+        }
+      }
+      assign_public_ip                   = true
+      deployment_minimum_healthy_percent = 100
+      subnet_ids                         = flatten(data.aws_subnets.public.ids)      #List of subnet IDs to use for your tasks
+      security_group_ids                 = [module.security_group.security_group_id] #Create a SG resource and pass it here
+    }
+
   }
 }
 
