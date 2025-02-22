@@ -32,7 +32,7 @@ module "ecs" {
       subnet_ids                         = flatten(data.aws_subnets.public.ids)         #List of subnet IDs to use for your tasks
       security_group_ids                 = [module.security_group_s3.security_group_id] #Create a SG resource and pass it here
       create_task_instance_role          = false
-      tasks_iam_role_arn                 = aws_iam_role.s3_app_exec.arn #Change
+      tasks_iam_role_arn                 = aws_iam_role.ecs_role.arn #Change
     }
     sqs-ecs-service = { #task definition and service name -> #Change
       cpu    = 512

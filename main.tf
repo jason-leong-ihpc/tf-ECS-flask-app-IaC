@@ -7,19 +7,37 @@ resource "aws_s3_bucket" "static_bucket" {
   force_destroy = true
 }
 
-resource "aws_iam_role" "s3_app_exec" {
-  name = "s3-app-executionrole"
-
-  assume_role_policy = data.aws_iam_policy_document.s3_static_bucket_policy.json
+resource "aws_iam_policy" "s3_app_policy" {
+  name   = "${local.name_prefix}-s3-app-policy"
+  policy = data.aws_iam_policy_document.s3_static_bucket_policy.json
 }
 
+### CREATE IAM ROLE AND ATTACH POLICY ###
 
-# resource "aws_s3_bucket_public_access_block" "enable_public_access" {
-#   bucket = aws_s3_bucket.static_bucket.id
+resource "aws_iam_role" "ecs_role" {
+  name = "${local.name_prefix}-ecs-role"
 
-#   block_public_acls       = true
-#   block_public_policy     = false
-#   ignore_public_acls      = true
-#   restrict_public_buckets = false
-# }
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "sts:AssumeRole"
+        ],
+        "Principal" : {
+          "Service" : [
+            "ecs-tasks.amazonaws.com"
+          ]
+        }
+      }
+    ]
+  })
+}
 
+### ATTACH THE S3 POLICY TO THE IAM ROLE ###
+
+resource "aws_iam_role_policy_attachment" "attach_s3_policy" {
+  role       = aws_iam_role.ecs_role.name
+  policy_arn = aws_iam_policy.s3_app_policy.arn
+}
