@@ -66,7 +66,7 @@ module "ecs" {
               name  = "QUEUE_URL"
               value = aws_sqs_queue.sqs_queue.id
             }
-          ]          
+          ]
         }
       }
       assign_public_ip                   = true
