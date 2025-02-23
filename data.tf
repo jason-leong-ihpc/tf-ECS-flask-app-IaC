@@ -39,6 +39,19 @@ data "aws_iam_policy_document" "s3_data_bucket_policy" {
   }
 }
 
+data "aws_iam_policy_document" "sqs_message_policy" {
+  statement {
+    sid    = ""
+    effect = "Allow"
+    actions = [
+      "sqs:SendMessage"
+    ]
+    resources = [
+      aws_sqs_queue.sqs_app_queue.arn
+    ]
+  }
+}
+
 data "aws_iam_policy_document" "ecs_assume_role_policy" {
   statement {
     sid    = "ECSTasksAssumeRole"
