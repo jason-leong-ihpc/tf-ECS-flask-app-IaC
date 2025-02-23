@@ -50,7 +50,7 @@ data "aws_iam_policy_document" "ecs_assume_role_policy" {
     actions = ["sts:AssumeRole"]
     condition {
       test     = "StringEquals"
-      values   = ["${data.aws_caller_identity.current.account_id}"]
+      values   = [data.aws_caller_identity.current.account_id]
       variable = "aws:SourceAccount"
     }
     condition {
