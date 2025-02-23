@@ -57,16 +57,16 @@ module "ecs" {
               protocol      = "tcp"
             }
           ]
-          # environment = [
-          #   {
-          #     name  = "AWS_REGION"
-          #     value = var.aws_region
-          #   },
-          #   {
-          #     name  = "QUEUE_URL"
-          #     value = # SQS URL
-          #   }
-          # ]          
+          environment = [
+            {
+              name  = "AWS_REGION"
+              value = var.aws_region
+            },
+            {
+              name  = "QUEUE_URL"
+              value = aws_sqs_queue.sqs_queue.id
+            }
+          ]          
         }
       }
       assign_public_ip                   = true
