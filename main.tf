@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "static_bucket" {
 
 resource "aws_iam_policy" "s3_app_policy" {
   name   = "${local.name_prefix}-s3-app-policy"
-  policy = data.aws_iam_policy_document.s3_static_bucket_policy.json
+  policy = data.aws_iam_policy_document.s3_data_bucket_policy.json
 }
 
 ### CREATE IAM ROLE AND ATTACH POLICY ###
@@ -17,22 +17,7 @@ resource "aws_iam_policy" "s3_app_policy" {
 resource "aws_iam_role" "ecs_role" {
   name = "${local.name_prefix}-ecs-role"
 
-  assume_role_policy = jsonencode({
-    "Version" : "2012-10-17",
-    "Statement" : [
-      {
-        "Effect" : "Allow",
-        "Action" : [
-          "sts:AssumeRole"
-        ],
-        "Principal" : {
-          "Service" : [
-            "ecs-tasks.amazonaws.com"
-          ]
-        }
-      }
-    ]
-  })
+  assume_role_policy = data.aws_iam_policy_document.ecs_assume_role_policy.json
 }
 
 ### ATTACH THE S3 POLICY TO THE IAM ROLE ###
