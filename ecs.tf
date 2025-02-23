@@ -64,7 +64,7 @@ module "ecs" {
             },
             {
               name  = "QUEUE_URL"
-              value = aws_sqs_queue.sqs_queue.id
+              value = aws_sqs_queue.sqs_app_queue.id
             }
           ]
         }
